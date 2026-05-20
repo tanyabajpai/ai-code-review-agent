@@ -6,6 +6,10 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.35+-red.svg)](https://streamlit.io)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-green.svg)](https://openai.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![OpenRouter](https://img.shields.io/badge/OpenRouter-compatible-purple.svg)](https://openrouter.ai)
+
+🔗 **Live Demo:** `https://your-app.streamlit.app` ← _replace with your Streamlit Cloud URL after deployment_  
+📁 **GitHub:** `https://github.com/yourusername/ai-code-review-agent` ← _replace with your repo URL_
 
 ---
 
@@ -107,7 +111,9 @@ pip install -r requirements.txt
 
 # 4. Configure environment variables
 cp .env.example .env
-# Edit .env and add your OpenAI API key
+# Edit .env and add your OpenAI or OpenRouter API key
+# OpenAI key:    OPENAI_API_KEY=sk-proj-...
+# OpenRouter key: OPENAI_API_KEY=sk-or-v1-...  (auto-detected)
 
 # 5. Run the app
 streamlit run app.py
@@ -119,8 +125,10 @@ The app will open at `http://localhost:8501`.
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `OPENAI_API_KEY` | ✅ Yes | Your OpenAI API key |
+| `OPENAI_API_KEY` | ✅ Yes | Your OpenAI **or** OpenRouter API key (auto-detected by prefix) |
 | `OPENAI_MODEL` | Optional | Model override (default: `gpt-4o-mini`) |
+
+> **Using OpenRouter?** Keys starting with `sk-or-` are auto-detected. Get a free key at [openrouter.ai/keys](https://openrouter.ai/keys) — no billing setup required for free-tier models.
 
 ---
 
@@ -197,7 +205,8 @@ Low-confidence items (< 50) are visually separated with a pulsing **"Verify This
 - [ ] **Incremental reviews** — only review changed files using git diff
 - [ ] **Caching layer** — cache reviews by file content hash to avoid re-reviewing unchanged code
 - [ ] **Custom rule injection** — let teams define their own review rules in YAML
-- [ ] **Claude Sonnet option** — support Anthropic's API as an alternative to OpenAI
+- [x] **OpenRouter support** — use any model (GPT-4o-mini, Claude Sonnet, Mistral, etc.) via OpenRouter's unified API
+- [ ] **Claude Sonnet native** — direct Anthropic API integration
 - [ ] **Export to GitHub Gist** — one-click sharing of review reports
 
 ---
