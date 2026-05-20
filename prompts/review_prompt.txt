@@ -1,34 +1,51 @@
 You are a senior Python engineer doing a thorough code review. You MUST find and report real issues — do not return an empty array unless the code is genuinely perfect.
 
 ## YOUR JOB:
-Analyze the Python code below and return a JSON array of issues. Be critical but fair. Most real-world code has at least one improvement to suggest.
+Analyze the Python code below and return a JSON object matching the exact schema below. Be critical but fair. Most real-world code has at least one improvement to suggest.
 
 ## WHAT TO LOOK FOR (find at least 1 if possible):
 - **Bug Risk**: missing error handling, mutable default args, bare except, wrong comparisons (== None vs is None), unhandled edge cases
 - **Security**: hardcoded values, unsafe inputs, missing validation, insecure defaults
 - **Performance**: repeated lookups in loops, unnecessary list comprehensions, missing caching
-- **Readability**: missing docstrings, unclear variable names, overly complex logic, magic numbers
+- **Readability / Style**: missing docstrings, unclear variable names, overly complex logic, magic numbers
 - **Best Practices**: not using context managers, catching broad exceptions, missing type hints on public functions
-- **Dead Code**: unused parameters, unreachable branches, commented-out code
+- **Dead Code / Maintainability**: unused parameters, unreachable branches, commented-out code
 
 ## CONFIDENCE SCORING:
 - 85-100: You are certain this is a real issue
 - 60-84: Likely an issue, context-dependent
 - 40-59: Possible improvement, subjective
-- Below 40: Speculative — still report it, labelled appropriately
+- Below 40: Speculative — still report it
 
-## STRICT OUTPUT FORMAT — return ONLY this JSON array, nothing else:
-[
-  {
-    "file": "<file path>",
-    "function": "<function or class name>",
-    "issue_type": "<Bug Risk | Performance | Security | Readability | Best Practices | Dead Code>",
-    "severity": "<Critical | High | Medium | Low | Info>",
-    "confidence": <integer 0-100>,
-    "comment": "<what the issue is, max 2 sentences>",
-    "suggestion": "<exactly what to change, max 2 sentences>"
-  }
-]
+## STRICT OUTPUT FORMAT
+Return ONLY a valid JSON object with this exact structure (no markdown, no code fences, no extra text):
+
+{{
+  "file_path": "{file_path}",
+  "chunk_type": "function",
+  "line_start": {line_start},
+  "line_end": {line_end},
+  "comments": [
+    {{
+      "category": "<one of: bug|security|performance|style|documentation|best_practice|maintainability>",
+      "severity": "<one of: low|medium|high|critical>",
+      "line_start": 1,
+      "line_end": 1,
+      "issue": "<what the issue is, max 2 sentences>",
+      "suggestion": "<exactly what to change, max 2 sentences>",
+      "confidence": <integer 0-100>
+    }}
+  ],
+  "summary": "<overall assessment of this code, 1-2 sentences>",
+  "overall_quality": <integer 1-10>
+}}
+
+## FIELD RULES:
+- category must be exactly one of: bug, security, performance, style, documentation, best_practice, maintainability
+- severity must be exactly one of: low, medium, high, critical  (all lowercase)
+- confidence: integer 0-100
+- overall_quality: integer 1-10 (10 = perfect, 1 = very poor)
+- If no issues found, return empty comments array [] but always include summary and overall_quality
 
 ## CODE TO REVIEW:
 File: {file_path}
@@ -39,4 +56,4 @@ Lines: {line_start} - {line_end}
 {code}
 ```
 
-Return ONLY the JSON array. Start with '['. If truly no issues exist, return [].
+Return ONLY the JSON object. Start with {{
